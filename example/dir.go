@@ -4,13 +4,11 @@ import "fmt"
 import "strings"
 import "log"
 import "io/ioutil"
-import "github.com/TylerBrock/colorjson"
+import "github.com/andrewarrow/pie-and-dat"
 
 func processFileByCategory(name, category string) {
-	pie := readAFileFullOfJson(name)
-	f := colorjson.NewFormatter()
-	f.Indent = 2
-	s, _ := f.Marshal(pie.data)
+	p := readAFileFullOfJson(name)
+	s, _ := pie.Marshal(p.data)
 	fmt.Println(string(s))
 }
 
