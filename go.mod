@@ -1,1 +1,1 @@
-module pie-and-dat
+module github.com/andrewarrow/pie-and-dat
