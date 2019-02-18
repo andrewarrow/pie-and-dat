@@ -1,8 +1,21 @@
 package main
 
 import "io/ioutil"
+import "encoding/json"
+import "log"
+import "strings"
 
-func readAFileFullOfJson(name string) string {
+type Pie struct {
+	data interface{}
+}
+
+func readAFileFullOfJson(name string) *Pie {
 	data, _ := ioutil.ReadFile(name)
-	return string(data)
+	dec := json.NewDecoder(strings.NewReader(string(data)))
+	pie := Pie{}
+	err := dec.Decode(&pie.data)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return &pie
 }
