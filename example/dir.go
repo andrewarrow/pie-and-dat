@@ -8,7 +8,7 @@ import "github.com/andrewarrow/pie-and-dat"
 
 func processFileByCategory(name, category string) {
 	p := readAFileFullOfJson(name)
-	s, _ := pie.Marshal(p.data)
+	s, _ := pie.Marshal(p.Data)
 	fmt.Println(string(s))
 }
 
