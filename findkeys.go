@@ -1,34 +1,36 @@
 package pie
 
-import "fmt"
+//import "fmt"
 import "sort"
 
-func FindKeys(jsonObj interface{}, keyId, keyName string) []string {
-	FindValue(jsonObj, keyId, keyName)
-	pair := []string{"", ""}
-	return pair
+func FindKeys(jsonObj interface{}, keyId, keyName string) map[string]interface{} {
+	return FindValue(jsonObj, keyId, keyName)
 }
-func FindArray(a []interface{}, keyId, keyName string) {
+func FindArray(a []interface{}, keyId, keyName string) map[string]interface{} {
+	v := map[string]interface{}{}
 	if len(a) == 0 {
-		return
+		return v
 	}
 
 	for _, v := range a {
-		FindValue(v, keyId, keyName)
+		v = FindValue(v, keyId, keyName)
 	}
+	return v
 }
-func FindValue(val interface{}, keyId, keyName string) {
+func FindValue(val interface{}, keyId, keyName string) map[string]interface{} {
 	switch v := val.(type) {
 	case map[string]interface{}:
-		FindMap(v, keyId, keyName)
+		return FindMap(v, keyId, keyName)
 	case []interface{}:
-		FindArray(v, keyId, keyName)
+		return FindArray(v, keyId, keyName)
 	}
+	return map[string]interface{}{}
 }
 
-func FindMap(m map[string]interface{}, keyId, keyName string) {
+func FindMap(m map[string]interface{}, keyId, keyName string) map[string]interface{} {
+	v := map[string]interface{}{}
 	if len(m) == 0 {
-		return
+		return v
 	}
 
 	keys := make([]string, 0)
@@ -39,9 +41,9 @@ func FindMap(m map[string]interface{}, keyId, keyName string) {
 
 	for _, key := range keys {
 		if key == keyId || key == keyName {
-			fmt.Println(key, m[key])
+			v[key] = m[key]
 		}
-		//buf.WriteString(fmt.Sprintf("\"%s\": ", key))
 		FindValue(m[key], keyId, keyName)
 	}
+	return v
 }
