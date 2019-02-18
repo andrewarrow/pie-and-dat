@@ -4,10 +4,14 @@ import "fmt"
 import "strings"
 import "log"
 import "io/ioutil"
+import "github.com/TylerBrock/colorjson"
 
 func processFileByCategory(name, category string) {
 	pie := readAFileFullOfJson(name)
-	fmt.Println(pie)
+	f := colorjson.NewFormatter()
+	f.Indent = 2
+	s, _ := f.Marshal(pie.data)
+	fmt.Println(string(s))
 }
 
 func assignMeaning(name string, value bool, token, meaning string) {
