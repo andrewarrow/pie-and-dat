@@ -1,13 +1,15 @@
 package pie
 
-import "fmt"
+//import "fmt"
 import "sort"
 
-var Pair = map[string]string{}
+var Pair = []map[string]string{}
 
 func FindKeys(jsonObj interface{}, keyId, keyName string) {
+	Pair = []map[string]string{}
 	FindValue(0, jsonObj, keyId, keyName)
 }
+
 func FindArray(a []interface{}, keyId, keyName string) {
 	if len(a) == 0 {
 		return
@@ -17,6 +19,7 @@ func FindArray(a []interface{}, keyId, keyName string) {
 		FindValue(i, b, keyId, keyName)
 	}
 }
+
 func FindValue(i int, val interface{}, keyId, keyName string) {
 	switch v := val.(type) {
 	case map[string]interface{}:
@@ -37,10 +40,14 @@ func FindMap(i int, m map[string]interface{}, keyId, keyName string) {
 	}
 	sort.Strings(keys)
 
+	t := map[string]string{}
 	for _, key := range keys {
 		if key == keyId || key == keyName {
-			Pair[fmt.Sprintf("%s_%d", key, i)] = m[key].(string)
+			t[key] = m[key].(string)
 		}
 		FindValue(i, m[key], keyId, keyName)
+	}
+	if len(t) > 0 {
+		Pair = append(Pair, t)
 	}
 }
