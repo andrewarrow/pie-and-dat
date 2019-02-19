@@ -8,8 +8,8 @@ import "github.com/andrewarrow/pie-and-dat"
 
 func processFileByCategory(name, category string) {
 	p := readAFileFullOfJson(name)
-	pair := pie.FindKeys(p.Data, "channelId", "channelTitle")
-	fmt.Println(pair)
+	pie.FindKeys(p.Data, "channelId", "channelTitle")
+	fmt.Println(pie.Pair)
 }
 
 func assignMeaning(name string, value bool, token, meaning string) {
