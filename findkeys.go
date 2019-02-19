@@ -1,32 +1,32 @@
 package pie
 
-//import "fmt"
+import "fmt"
 import "sort"
 
 var Pair = map[string]string{}
 
 func FindKeys(jsonObj interface{}, keyId, keyName string) {
-	FindValue(jsonObj, keyId, keyName)
+	FindValue(0, jsonObj, keyId, keyName)
 }
 func FindArray(a []interface{}, keyId, keyName string) {
 	if len(a) == 0 {
 		return
 	}
 
-	for _, b := range a {
-		FindValue(b, keyId, keyName)
+	for i, b := range a {
+		FindValue(i, b, keyId, keyName)
 	}
 }
-func FindValue(val interface{}, keyId, keyName string) {
+func FindValue(i int, val interface{}, keyId, keyName string) {
 	switch v := val.(type) {
 	case map[string]interface{}:
-		FindMap(v, keyId, keyName)
+		FindMap(i, v, keyId, keyName)
 	case []interface{}:
 		FindArray(v, keyId, keyName)
 	}
 }
 
-func FindMap(m map[string]interface{}, keyId, keyName string) {
+func FindMap(i int, m map[string]interface{}, keyId, keyName string) {
 	if len(m) == 0 {
 		return
 	}
@@ -39,8 +39,8 @@ func FindMap(m map[string]interface{}, keyId, keyName string) {
 
 	for _, key := range keys {
 		if key == keyId || key == keyName {
-			Pair[key] = m[key].(string)
+			Pair[fmt.Sprintf("%s_%d", key, i)] = m[key].(string)
 		}
-		FindValue(m[key], keyId, keyName)
+		FindValue(i, m[key], keyId, keyName)
 	}
 }
