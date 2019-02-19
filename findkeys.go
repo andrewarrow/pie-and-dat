@@ -42,8 +42,11 @@ func FindMap(i int, m map[string]interface{}, keyId, keyName string) {
 
 	t := map[string]string{}
 	for _, key := range keys {
-		if key == keyId || key == keyName {
-			t[key] = m[key].(string)
+		if key == keyId {
+			t["id"] = m[key].(string)
+		}
+		if key == keyName {
+			t["name"] = m[key].(string)
 		}
 		FindValue(i, m[key], keyId, keyName)
 	}
