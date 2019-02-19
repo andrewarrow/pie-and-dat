@@ -1,6 +1,7 @@
 package main
 
 import "fmt"
+import "sort"
 import "strings"
 import "log"
 import "io/ioutil"
@@ -11,13 +12,11 @@ var counts = map[string]int{}
 var i = 1
 
 func processFileByCategory(name, category string) {
-	if category != "17.json" {
-		p := readAFileFullOfJson(name)
-		pie.FindKeys(p.Data, "channelId", "channelTitle")
-		for _, v := range pie.Pair {
-			m[v["id"]] = v["name"]
-			counts[v["id"]]++
-		}
+	p := readAFileFullOfJson(name)
+	pie.FindKeys(p.Data, "channelId", "channelTitle")
+	for _, v := range pie.Pair {
+		m[v["id"]] = v["name"]
+		counts[v["id"]]++
 	}
 }
 
@@ -49,9 +48,16 @@ func LoadADirFullOfJsonFiles(path string) {
 			assignMeaning(name, i == 6, t, "category")
 		}
 	}
-	for k, v := range m {
+
+	keys := make([]string, 0)
+	for key := range counts {
+		keys = append(keys, key)
+	}
+	sort.Strings(keys)
+
+	for _, k := range keys {
 		if counts[k] > 4 {
-			fmt.Println(i, k, v, counts[k])
+			fmt.Println(k, m[k], counts[k])
 			i++
 		}
 	}
